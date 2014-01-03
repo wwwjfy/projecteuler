@@ -18,11 +18,18 @@ bool is_2_palindromic(unsigned num) {
 }
 
 bool is_10_palindromic(unsigned num) {
-    char numstr[7];
-    size_t high, low;
-    sprintf(numstr, "%u", num);
-    low = 0;
-    high = strlen(numstr) - 1;
+    char numstr[6];
+    char tmp;
+    size_t high = 0, low = 0;
+    tmp = num % 10;
+    num /= 10;
+    while (num || tmp) {
+        numstr[high] = tmp;
+        high++;
+        tmp = num % 10;
+        num /= 10;
+    }
+    high--;
     while (high > low) {
         if (numstr[high] != numstr[low]) {
             return false;
@@ -36,7 +43,8 @@ bool is_10_palindromic(unsigned num) {
 int main(void) {
     long unsigned sum = 0;
     unsigned i;
-    for (i = 1; i < 1000000; i++) {
+    // 0 at the end of binary for even numbers
+    for (i = 1; i < 1000000; i += 2) {
         if (is_10_palindromic(i) && is_2_palindromic(i)) {
             sum += i;
         }
